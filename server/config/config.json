@@ -1,0 +1,10 @@
+{
+  "development": {
+    "username": "tguuqfdw",
+    "password": "RJTZVNqQ2yO5jYhqW7v0lKmGocK1HQdi",
+    "database": "tguuqfdw",
+    "host": "pellefant.db.elephantsql.com",
+    "port": 5432,
+    "dialect": "postgres"
+  }
+}
