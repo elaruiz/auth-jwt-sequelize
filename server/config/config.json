@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "tguuqfdw",
-    "password": "RJTZVNqQ2yO5jYhqW7v0lKmGocK1HQdi",
-    "database": "tguuqfdw",
-    "host": "pellefant.db.elephantsql.com",
+    "username": "postgres",
+    "password": null,
+    "database": "auth",
+    "host": "127.0.0.1",
     "port": 5432,
     "dialect": "postgres"
   }

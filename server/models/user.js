@@ -1,18 +1,15 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) =>{
   var User = sequelize.define('User', {
-    
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    token: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
+    password: DataTypes.STRING
   });
+  User.associate = (models) => {
+    User.hasOne(models.Plan, {
+      foreignKey: 'id'
+    });
+  };
   return User;
 };

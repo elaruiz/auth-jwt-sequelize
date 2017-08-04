@@ -4,8 +4,6 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-var config = require('./server/config/auth'); // get our config file
-
 // Set up the express app
 const app = express();
 
@@ -16,11 +14,11 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(function(req, res, next) {
-res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
-    next();
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+	    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
+	    next();
 });
 
 // Require our routes into the application.

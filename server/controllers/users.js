@@ -1,7 +1,7 @@
 const User = require('../models').User;
 const bCrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
-var config = require('../config/auth'); // get our config file
+var access = require('../config/access'); // get our access file
 var generateHash = (password) => bCrypt.hashSync(password, bCrypt.genSaltSync(8), null);
 
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
     return User
     	.findOne({
     		where: {
-    			email: req.body.email
+    			email: req.body.email.toLowerCase()
     		}
     	})
     	.then(user => {
@@ -25,6 +25,7 @@ module.exports = {
 			        lastname: req.body.lastname,
 			        email: req.body.email,
 			        password: userPassword,
+			        plan: req.body.plan
 			    })
     			 .then(user => res.status(201).send(user))
     			 .catch(error => res.status(400).send(error));
@@ -36,7 +37,7 @@ module.exports = {
   	return User
     	.findOne({
     		where: {
-    			email: req.body.email
+    			email: req.body.email.toLowerCase()
     		}
     	})
     	.then(user => {
@@ -52,24 +53,37 @@ module.exports = {
 		          	message: 'Invalid password',
 		          })
 		        }
-		        var token = jwt.sign({user: user.email}, config.secret, {
+		        var token = jwt.sign({user: user.email}, config.TOKEN_SECRET, {
 		          expiresIn: '1440m',
 		          algorithm: 'HS256'
 		        });
-		        return user
-					.update({
+		        return res.status(200).send({
 						token: token,
-					})
-					.then(() => res.status(200).send({
-						token: user.token
-					})) //Send back the updated todo
-					.catch((error) => res.status(400).send(error));
+					});
 		      });
     		}
     	})
     	.catch(error => res.status(400).send(error));
-  },
+  }, 
+  update(req, res) {
+  	return User
+  		.findById(req.params.id)
+  		.then(user => {
+  			if(!user) {
+  				return res.status(404).send({
+  					message: 'User not found'
+  				});
+  			}
+  			return user
+  				.update({
+  					firstname: req.body.firstname || user.firstname,
+			        lastname: req.body.lastname || user.lastname,
+			        email: req.body.email || user.email,
+			        password: userPassword || user.password,
+  				})
+  				.then(() => res.status(200).send(user))
+  				.catch((error) => res.status(400).send(error))
+  		})
+  		.catch((error) => res.status(400).send(error))
+  }
 };
-        
-    
- 
